@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>JLT Bot QR</title>
+<style>body{font-family:sans-serif;background:#0a0a0f;color:#fff;text-align:center;padding:40px}
+#qr{margin:20px auto;background:#fff;padding:20px;border-radius:16px;display:inline-block}
+#status{margin-top:20px;color:#aaa}</style>
+</head><body>
+<h1>MAGIC OPS - 真二维码</h1>
+<p>用你的个人WhatsApp扫码登录 yingdi19950313</p>
+<div id="qr"><img id="qrImg" src="/qr" style="width:280px;height:280px" onerror="this.src=''" /></div>
+<div id="status">状态: 加载中...</div>
+<script>
+async function refresh(){
+  const res = await fetch('/status');
+  const data = await res.json();
+  document.getElementById('status').innerText = '状态: ' + data.status + (data.connectedNumber ? ' ('+data.connectedNumber+')' : '');
+  if(data.status === 'connected'){
+    document.getElementById('qr').innerHTML = '<h2 style=color:#00ff88>✓ 已连接 '+data.connectedNumber+'</h2><p>会话活跃 24/7</p>';
+  } else {
+    document.getElementById('qrImg').src = '/qr?t='+Date.now();
+  }
+}
+setInterval(refresh, 5000);
+refresh();
+</script>
+</body></html>
